@@ -1,10 +1,16 @@
-osx_image: xcode8
+os: osx
+osx_image: xcode8.2
 language: objective-c
 script:
-  - set -o pipefail && xcodebuild build -workspace NibDesignableDemo/NibDesignableDemo.xcworkspace -scheme NibDesignableDemo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=10.0'| xcpretty -f `xcpretty-travis-formatter`
-  - set -o pipefail && xcodebuild test -workspace NibDesignableDemo/NibDesignableDemo.xcworkspace -scheme NibDesignableDemo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=10.0'| xcpretty -f `xcpretty-travis-formatter`
+  - set -o pipefail
+  - xcodebuild build -workspace NibDesignableDemo/NibDesignableDemo.xcworkspace -scheme NibDesignableDemo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.2'| xcpretty -f `xcpretty-travis-formatter`
+  - xcodebuild test -workspace NibDesignableDemo/NibDesignableDemo.xcworkspace -scheme NibDesignableDemo -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.2'| xcpretty -f `xcpretty-travis-formatter`
   - swiftlint lint --strict
 before_install:
   - brew update
   - brew outdated swiftlint || brew upgrade swiftlint
   - gem install xcpretty xcpretty-travis-formatter
+
+  # https://github.com/travis-ci/travis-ci/issues/7031
+  - xcrun simctl list
+  - xcrun simctl delete E40727B3-41FB-4D6E-B4CB-BFA87109EB12
